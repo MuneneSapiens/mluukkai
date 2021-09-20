@@ -1,2 +1,2 @@
-# mluukkai_part_0
+# mluukkai
 For full stack webdesign course
