@@ -1,23 +1,73 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+
+const Header =(props)=>{
+  return(
+    <>
+      <h1>Course Name: {props.course.name}</h1>
+    </>
+  )
+
+}
+const Part =(props) =>{
+  return(
+        <>
+         <p>{props.partName} {props.noOfEx}</p> 
+        </>
+  )
+}
+
+const Content =(props) =>{
+  
+  return(
+    <div>     
+         {
+            props.course.parts.map(item => {
+              return <Part  partName = {item['name']}   noOfEx = {item['excercises']}/> ;
+            })
+          }    
+    </div>
+  )
+}
+
+
+const Total =(props) =>{
+  const numbers = props.course.parts;
+  const exTotal = numbers.reduce((tex,m) => tex + m.excercises,0);
+  return(
+        <>
+           <p>Total Exercises:  {exTotal}</p>
+        </>
+  )}
+
+const  App = () => {
+  const course ={
+      name:'Half Stack application development',
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          excercises: 10
+        },
+        {
+          name: 'Using props to pass data',
+          excercises: 7
+        },
+        {
+          name: 'State of a component',
+          excercises: 14
+        }
+      ]
+    }
+    
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <Header course= {course} />
+
+     <Content  course= {course}/>
+
+     <Total  course= {course} />
+
+     
     </div>
   );
 }
