@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 
-const Head =(props)=>{
+const Header =(props)=>{
   return(
     <>
-      <h1>Course Name: {props.course}</h1>
+      <h1>Course Name: {props.course.name}</h1>
     </>
   )
 
@@ -16,40 +16,58 @@ const Part =(props) =>{
         </>
   )
 }
-const Content =() =>{
-  const part1  ='Fundamentals of React'
-  const excercises1 = 10
-  const part2 = 'Using props to pass data'
-  const excercises2 =7
-  const part3 ='State of a component'
-  const excercises3 = 14
+
+const Content =(props) =>{
+  
   return(
-    <div> 
-       <Part partName = {part1} noOfEx = {excercises1} />
-       <Part partName = {part2} noOfEx = {excercises2} />
-       <Part partName = {part3} noOfEx = {excercises3} />
+    <div>     
+         {
+            props.course.parts.map(item => {
+              return <Part  partName = {item['name']}   noOfEx = {item['excercises']}/> ;
+            })
+          }    
     </div>
   )
 }
+
+
 const Total =(props) =>{
+  const numbers = props.course.parts;
+  const exTotal = numbers.reduce((tex,m) => tex + m.excercises,0);
   return(
-    <>
-      <p>Total Excercises: {props.ex1 + props.ex2 + props.ex3} </p>
-    </>
-  )
-}
+        <>
+           <p>Total Exercises:  {exTotal}</p>
+        </>
+  )}
 
 const  App = () => {
-  const course ='Half Stack application development'
-  const excercises1 = 10
-  const excercises2 =7
-  const excercises3 = 14
+  const course ={
+      name:'Half Stack application developments',
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          excercises: 10
+        },
+        {
+          name: 'Using props to pass data',
+          excercises: 7
+        },
+        {
+          name: 'State of a component',
+          excercises: 14
+        }
+      ]
+    }
+    
   return (
     <div >
-      <Head course= {course} />
+      <Header course= {course} />
+
+     <Content  course= {course}/>
+
+     <Total  course= {course} />
+
      
-     <Content />
-     <Total  ex1={excercises1} ex2={excercises2} ex3={excercises3} />
     </div>
   );
 }
