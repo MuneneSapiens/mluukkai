@@ -1,0 +1,80 @@
+import React,{useState} from 'react'
+import Filter from './components/Filter'
+import Persons from './components/Persons'
+import PersonForm from './components/PersonForm'
+
+
+const  App =()=> {
+  
+
+  const [newName,setNewName] =useState('')
+  const [newNumber,setNewNumber] =useState('')
+  const [filterCriteria,setFilterCriteria] =useState('')
+  const[matches, setMatches]=useState([])
+
+  const addNewContact =(event) =>{
+    event.preventDefault()
+    if (persons.filter(e => e.name === newName).length > 0 ||  
+    persons.filter(e => e.number === newNumber).length > 0) {
+      window.alert(`${newName} or ${newNumber} is already added to the phonebook.`);
+    }else{
+      const contactObject = {
+        name: newName,
+        number:newNumber
+      }
+      setPersons(persons.concat(contactObject))
+      setNewName('')
+      setNewNumber('')
+      setFilterCriteria('')
+    }
+  }
+
+  // handle onChange event for Name input
+  const handleNameChange=(event) => {
+    setNewName(event.target.value) 
+  }
+
+  // handle onChange event for Number input
+  const handleNumberChange=(event) => {
+    setNewNumber(event.target.value) 
+  }
+
+   // handle filter criteria change
+   const handleCriteriaChange=(event) => {
+    setFilterCriteria(event.target.value) 
+    const re = RegExp(`.*${filterCriteria.toLowerCase().split('').join('.*')}.*`)
+    setMatches(persons.filter(v => v.name.toLowerCase().match(re)))
+  }
+
+  // Choose what  to show
+    const contactsToShow =filterCriteria===''
+    ? persons 
+    : matches
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+        <Filter 
+            filterCriteria= {filterCriteria} 
+            handleCriteriaChange ={handleCriteriaChange}
+        />
+   
+      <h3>Add a new Contact</h3>
+        <PersonForm  
+            addNewContact ={addNewContact} 
+            newName ={newName}  
+            handleNameChange={handleNameChange}  
+            newNumber={newNumber} 
+            handleNumberChange ={handleNumberChange} 
+            text='Add' 
+        /> 
+      
+      <h2>Numbers</h2>
+      <ul>  
+        <Persons contactsToShow = {contactsToShow} />
+      </ul>
+    </div>
+  );
+}
+
+export default App;
